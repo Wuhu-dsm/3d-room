@@ -134,7 +134,7 @@ export default class RightMonitorScreen {
     }
 
     if (this.iframe) {
-      this.iframe.style.pointerEvents = "none";
+      this.iframe.style.pointerEvents = isInteractive ? "auto" : "none";
     }
   }
 
