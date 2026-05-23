@@ -102,3 +102,7 @@ export const PAINT_ROTATION_Y = 0;
 export const PAINT_ROTATION_Z = 0;
 export const PAINT_SCALE = 0.48;
 export const TOP_CHAIR_POSITION = new Vector3(1.4027, 0.496728, -1.21048);
+export const WORK_BADGE_POSITION = new Vector3(0.7, 1.93, -3.67);
+export const WORK_BADGE_ROTATION_Y = 0;
+export const WORK_BADGE_ROTATION_X = -(90 * Math.PI) / 180;
+export const WORK_BADGE_SCALE = 0.15;

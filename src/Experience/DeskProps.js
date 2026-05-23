@@ -24,6 +24,10 @@ import {
   RUBIK_POSITION,
   RUBIK_ROTATION_Y,
   RUBIK_SCALE,
+  WORK_BADGE_POSITION,
+  WORK_BADGE_ROTATION_X,
+  WORK_BADGE_ROTATION_Y,
+  WORK_BADGE_SCALE,
   ZHANGXUEFENG_POSITION,
   ZHANGXUEFENG_ROTATION_Y,
   ZHANGXUEFENG_SCALE,
@@ -39,6 +43,7 @@ export default class DeskProps {
     this.setCoffeeReplacement();
     this.setZhangxuefeng();
     this.setKadunSpeaker();
+    this.setWorkBadge();
     this.setPaint();
   }
 
@@ -183,6 +188,17 @@ export default class DeskProps {
     this.kadunHitbox.name = "kadunSpeakerHitbox";
     this.kadunHitbox.position.copy(KADUN_HITBOX_POSITION);
     this.scene.add(this.kadunHitbox);
+  }
+
+  setWorkBadge() {
+    this.workBadge = this.resources.items.workBadge.scene;
+    this.workBadge.name = "workBadge";
+    this.workBadge.position.copy(WORK_BADGE_POSITION);
+    this.workBadge.rotation.x = WORK_BADGE_ROTATION_X;
+    this.workBadge.rotation.y = WORK_BADGE_ROTATION_Y;
+    this.workBadge.scale.set(WORK_BADGE_SCALE, WORK_BADGE_SCALE, WORK_BADGE_SCALE);
+    this.configureProp(this.workBadge);
+    this.scene.add(this.workBadge);
   }
 
   setPaint() {

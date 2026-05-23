@@ -24,7 +24,6 @@ export default class Resources extends EventEmitter {
   constructor() {
     super();
     this.loadingScreen = document.querySelector(".loadingScreen");
-    this.audioButton = document.querySelector(".audio-button");
     this.loadingScreen.classList.add("show-loading-screen");
 
     this.experience = new Experience();
@@ -259,10 +258,6 @@ export default class Resources extends EventEmitter {
         this.loadingScreen.classList.remove("finished-load");
 
         const clickHandler = () => {
-          const audioManager = this.experience.world.audioManager;
-          audioManager.playSingleAudio("start", 0.4);
-          audioManager.playLoopAudio("floral", 0.1);
-          this.audioButton.classList.add("show-audio-button");
           this.loadingScreen.classList.remove("show-loading-screen");
           this.showExperience();
           this.activateExperience();

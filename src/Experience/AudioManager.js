@@ -7,25 +7,10 @@ export default class AudioManager {
     this.resources = this.experience.resources;
     this.scene = this.experience.scene;
     this.camera = this.experience.camera.instance;
-    this.audioButton = document.querySelector(".audio-button");
     this.isMuted = false;
     this.hasStarted = false;
     this.audioListeners = [];
     this.loopingAudios = {};
-    this.setAudioManager();
-  }
-  setAudioManager() {
-    this.audioButton.addEventListener("click", () => {
-      if (this.audioButton.classList.contains("audio-button-muted")) {
-        this.isMuted = false;
-        this.unmuteAudios();
-        this.audioButton.classList.remove("audio-button-muted");
-      } else {
-        this.isMuted = true;
-        this.muteAudios();
-        this.audioButton.classList.add("audio-button-muted");
-      }
-    });
   }
   muteAudios() {
     this.audioListeners.forEach((audioListener) => {
