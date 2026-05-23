@@ -86,4 +86,4 @@ Items acknowledged and carried forward from previous milestone close:
 
 Last session: 2026-05-23T12:45:18.426Z
 Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/CYBERROOM-01-cyberpunk-ui-shell-room-framing/01-CONTEXT.md
+Resume file: .planning/phases/CYBER-01-cyberpunk-ui-shell-room-framing/01-CONTEXT.md

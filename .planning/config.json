@@ -42,7 +42,7 @@
   "hooks": {
     "context_warnings": true
   },
-  "project_code": "CYBERROOM",
+  "project_code": "CYBER",
   "agent_skills": {},
   "claude_md_path": "./AGENTS.md",
   "model_profile": "inherit",
