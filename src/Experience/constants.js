@@ -14,9 +14,9 @@ export const RIGHT_COMPUTER_CAMERA_POSITION = new Vector3(
   -1.53751
 );
 export const STANDING_CAMERA_TARGET = new Vector3(-1.7, 3.05, -4.45);
-export const STANDING_CAMERA_POSITION = new Vector3(1.06738, 4.05, -1.6);
+export const STANDING_CAMERA_POSITION = new Vector3(2.1, 3.4, -0.5);
 export const WHITEBOARD_CAMERA_TARGET = new Vector3(-3.3927, 3.18774, -4.61366);
-export const WHITEBOARD_CAMERA_POSITION = new Vector3(-3.3927, 3.18774, -1.05);
+export const WHITEBOARD_CAMERA_POSITION = new Vector3(-3.3927, 3.18774, 1.38634);
 export const CAMERA_POSITION = COMPUTER_CAMERA_POSITION;
 
 // Monitors

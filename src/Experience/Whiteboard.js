@@ -77,10 +77,10 @@ export default class Whiteboard {
     const whiteboardGeom = new PlaneGeometry(2.6, 1.82);
     whiteboardGeom.computeBoundingBox();
     whiteboardGeom.computeVertexNormals();
-    const planeMesh = new Mesh(whiteboardGeom, this.whiteboardMaterial);
-    planeMesh.position.set(-3.3927, 3.18774, -4.61366);
-    planeMesh.name = "whiteboardCanvas";
-    this.model.mesh.add(planeMesh);
+    this.canvasMesh = new Mesh(whiteboardGeom, this.whiteboardMaterial);
+    this.canvasMesh.position.set(-3.3927, 3.18774, -4.61366);
+    this.canvasMesh.name = "whiteboardCanvas";
+    this.model.mesh.add(this.canvasMesh);
 
     const image = this.resources.items.texture_paint.source.data;
     image.src = image.src;
@@ -144,9 +144,9 @@ export default class Whiteboard {
       return;
     }
     this.raycaster.setFromCamera(this.mouse, this.camera.instance);
-    const intersects = this.raycaster.intersectObjects(
-      this.scene.children,
-      true
+    const intersects = this.raycaster.intersectObject(
+      this.canvasMesh,
+      false
     );
     this.objectRaycasted = intersects.length > 0 ? intersects[0] : null;
   }
