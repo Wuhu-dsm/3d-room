@@ -23,16 +23,19 @@ export default class Resources extends EventEmitter {
    */
   constructor() {
     super();
-    this.banner = document.querySelector(".banner");
     this.loadingScreen = document.querySelector(".loadingScreen");
     this.audioButton = document.querySelector(".audio-button");
     this.loadingScreen.classList.add("show-loading-screen");
 
     this.experience = new Experience();
+    this.webglElement = this.experience.webglElement;
+    this.cssLeftMonitor = this.experience.cssLeftMonitor;
+    this.cssRightMonitor = this.experience.cssRightMonitor;
     this.renderer = this.experience.renderer.instance;
     this.scene = this.experience.scene;
     this.camera = this.experience.camera.instance;
     this.resourcesLoaded = false;
+    this.hideExperience();
     this.setOverlayLoading();
     this.setLoaders();
 
@@ -170,21 +173,34 @@ export default class Resources extends EventEmitter {
     this.scene.add(this.overlay);
   }
 
+  hideExperience() {
+    this.webglElement.classList.add("experience-hidden");
+    this.cssLeftMonitor.classList.add("experience-hidden");
+    this.cssRightMonitor.classList.add("experience-hidden");
+  }
+
+  showExperience() {
+    this.webglElement.classList.remove("experience-hidden");
+    this.cssLeftMonitor.classList.remove("experience-hidden");
+    this.cssRightMonitor.classList.remove("experience-hidden");
+  }
+
+  activateExperience() {
+    this.resourcesLoaded = true;
+    this.experience.navigation.orbitControls.enabled = true;
+    this.experience.navigation.showStandButton();
+    this.experience.navigation.activateComputerScreen("left");
+  }
+
   removeOverlay = () => {
     gsap.to(this.overlayMaterial.uniforms.uAlpha, {
       duration: 0.5,
       value: 0,
-      delay: 1,
       ease: "sine.in",
       onComplete: () => {
         this.overlayGeometry.dispose();
         this.overlayMaterial.dispose();
         this.scene.remove(this.overlay);
-        this.resourcesLoaded = true;
-      },
-      onStart: () => {
-        this.banner.style.top = "0px";
-        this.experience.navigation.orbitControls.enabled = true;
       },
     });
   };
@@ -248,6 +264,8 @@ export default class Resources extends EventEmitter {
           audioManager.playLoopAudio("floral", 0.1);
           this.audioButton.classList.add("show-audio-button");
           this.loadingScreen.classList.remove("show-loading-screen");
+          this.showExperience();
+          this.activateExperience();
           this.removeOverlay();
           this.loadingScreen.removeEventListener("click", clickHandler);
         };

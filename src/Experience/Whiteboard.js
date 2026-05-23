@@ -34,6 +34,14 @@ export default class Whiteboard {
     this.setWhiteboard();
   }
 
+  get canvasWidth() {
+    return this.drawingCanvas.width;
+  }
+
+  get canvasHeight() {
+    return this.drawingCanvas.height;
+  }
+
   setModel() {
     this.whiteboardButtons = document.querySelectorAll(
       ".circular-button-whiteboard"
@@ -80,12 +88,14 @@ export default class Whiteboard {
     this.drawingCanvas = document.getElementById("drawing-canvas");
     this.drawingContext = this.drawingCanvas.getContext("2d");
     image.onload = () => {
+      this.drawingCanvas.width = image.naturalWidth || image.width;
+      this.drawingCanvas.height = image.naturalHeight || image.height;
       this.drawingContext.drawImage(
         image,
         0,
         0,
-        this.drawingCanvas.width,
-        this.drawingCanvas.height
+        this.canvasWidth,
+        this.canvasHeight
       );
 
       this.canvasTexture = new CanvasTexture(this.drawingCanvas);
@@ -108,7 +118,7 @@ export default class Whiteboard {
     this.drawingContext.fontSmoothingEnabled = true;
     // draw white background
     this.drawingContext.fillStyle = "white";
-    this.drawingContext.fillRect(0, 0, 2048, 1024);
+    this.drawingContext.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
     this.drawingCanvas.needsUpdate = true;
     this.canvasTexture = new CanvasTexture(this.drawingCanvas);
@@ -160,9 +170,11 @@ export default class Whiteboard {
       this.objectRaycasted.object.name == "whiteboardCanvas"
     ) {
       this.drawing = true;
+      this.experience.navigation.orbitControls.enableDamping = false;
+      this.experience.navigation.orbitControls.enabled = false;
       this.drawStartPos.set(
-        this.objectRaycasted.uv.x * 2048,
-        1024 - this.objectRaycasted.uv.y * 1024
+        this.objectRaycasted.uv.x * this.canvasWidth,
+        this.canvasHeight - this.objectRaycasted.uv.y * this.canvasHeight
       );
       this.drawingContext.beginPath();
     }
@@ -170,17 +182,13 @@ export default class Whiteboard {
 
   onMouseMove = () => {
     if (
+      !this.drawing &&
       this.objectRaycasted &&
       this.objectRaycasted.object &&
-      this.objectRaycasted.object.name == "whiteboardCanvas"
+      this.objectRaycasted.object.name != "whiteboardCanvas"
     ) {
-      this.experience.navigation.orbitControls.enableDamping = false;
-      this.experience.navigation.orbitControls.enabled = false;
-      this.webglElement.style.pointerEvents = "none";
-    } else {
       this.experience.navigation.orbitControls.enableDamping = true;
       this.experience.navigation.orbitControls.enabled = true;
-      this.webglElement.style.pointerEvents = "auto";
     }
 
     if (
@@ -190,8 +198,8 @@ export default class Whiteboard {
       this.objectRaycasted.object.name == "whiteboardCanvas"
     ) {
       this.draw(
-        this.objectRaycasted.uv.x * 2048,
-        1024 - this.objectRaycasted.uv.y * 1024
+        this.objectRaycasted.uv.x * this.canvasWidth,
+        this.canvasHeight - this.objectRaycasted.uv.y * this.canvasHeight
       );
     } else {
       this.drawing = false;
@@ -201,6 +209,8 @@ export default class Whiteboard {
   onMouseUp = () => {
     this.drawing = false;
     this.drawingContext.closePath();
+    this.experience.navigation.orbitControls.enableDamping = true;
+    this.experience.navigation.orbitControls.enabled = true;
   };
 
   activateControls() {

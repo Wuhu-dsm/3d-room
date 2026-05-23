@@ -1,18 +1,11 @@
 import Experience from "./Experience.js";
 import Baked from "./Baked.js";
-import CoffeeSteam from "./CoffeeSteam.js";
 import TopChair from "./TopChair.js";
+import DeskProps from "./DeskProps.js";
 import Whiteboard from "./Whiteboard.js";
-import Carpet from "./Carpet.js";
-import ArcadeScreen from "./ArcadeScreen.js";
 import LeftMonitorScreen from "./LeftMonitorScreen.js";
 import RightMonitorScreen from "./RightMonitorScreen.js";
-import RubiksCube from "./RubiksCube.js";
-import Skybox from "./Skybox.js";
-import Confetti from "./Confetti.js";
 import AudioManager from "./AudioManager.js";
-
-import { RUBIK_POSITION, RUBIK_SCALE } from "./constants.js";
 
 export default class World {
   constructor(_options) {
@@ -26,15 +19,10 @@ export default class World {
         this.setAudioManager();
         this.setBaked();
         this.setWhiteboard();
-        this.setCarpet();
-        this.setArcadeScreen();
         this.setLeftMonitorScreen();
         this.setRightMonitorScreen();
         this.setTopChair();
-        this.setSkybox();
-        this.setConfetti();
-        this.setCoffeeSteam();
-        this.setRubiksCube();
+        this.setDeskProps();
       }
     });
   }
@@ -43,36 +31,16 @@ export default class World {
     this.baked = new Baked();
   }
 
-  setRubiksCube() {
-    this.rubiksCube = new RubiksCube(RUBIK_POSITION, RUBIK_SCALE);
-  }
-
-  setSkybox() {
-    this.skybox = new Skybox();
-  }
-
-  setCoffeeSteam() {
-    this.coffeeSteam = new CoffeeSteam();
+  setWhiteboard() {
+    this.whiteboard = new Whiteboard();
   }
 
   setTopChair() {
     this.topChair = new TopChair();
   }
 
-  setConfetti() {
-    this.confetti = new Confetti();
-  }
-
-  setWhiteboard() {
-    this.whiteboard = new Whiteboard();
-  }
-
-  setCarpet() {
-    this.carpet = new Carpet();
-  }
-
-  setArcadeScreen() {
-    this.arcadeScreen = new ArcadeScreen();
+  setDeskProps() {
+    this.deskProps = new DeskProps();
   }
 
   setLeftMonitorScreen() {
@@ -89,13 +57,9 @@ export default class World {
   resize() {}
 
   update() {
-    if (this.coffeeSteam) this.coffeeSteam.update();
     if (this.topChair) this.topChair.update();
-    if (this.rubiksCube) this.rubiksCube.update();
-    if (this.skybox) this.skybox.update();
     if (this.leftMonitorScreen) this.leftMonitorScreen.update();
     if (this.rightMonitorScreen) this.rightMonitorScreen.update();
-    if (this.confetti) this.confetti.update();
     if (this.whiteboard) this.whiteboard.update();
   }
 

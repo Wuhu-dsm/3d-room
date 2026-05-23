@@ -20,9 +20,10 @@ body {
   pointer-events: auto;
 }
 
-#cssArcadeMachine {
-  pointer-events: none;
-  cursor: pointer;
+.experience-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none !important;
 }
 
 #cssLeftMonitor {
@@ -38,39 +39,6 @@ body {
 #drawing-canvas {
   background-color: #ffffff;
   display: none;
-}
-
-.banner {
-  display: flex;
-  background-color: #0a3362;
-  color: #eda72d;
-  padding: 10px 0px;
-  text-align: center;
-  font-size: 1.5vw;
-  position: absolute;
-  top: -90px;
-  height: 60px;
-  left: 0;
-  width: 100vw;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-  transition: top 0.5s ease-in-out;
-}
-
-.banner-link {
-  text-align: center;
-  user-select: none;
-  justify-content: center;
-  cursor: pointer;
-  margin: 0 1vw;
-  transition: 0.2s ease-in-out;
-}
-
-.banner-link:hover {
-  font-size: 1.75vw;
 }
 
 .circular-button {
@@ -89,13 +57,14 @@ body {
   visibility: hidden;
   font-size: 16px;
   cursor: pointer;
-  transition: opacity 1s, visibility 1s, background-size 0.2s ease-in-out;
+  transition: opacity 1s, background-size 0.2s ease-in-out;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
   z-index: 2;
   background-image: url("../static/assets/svg/arrow-back.svg");
   background-size: 70%;
   background-position: center;
   background-repeat: no-repeat;
+  transform: rotate(90deg);
 }
 
 .show-back-button {
@@ -116,7 +85,7 @@ body {
   display: flex;
   justify-content: center;
   z-index: 1;
-  transition: opacity 1s, visibility 1s;
+  transition: opacity 1s;
 }
 
 .show-button-row {
@@ -143,26 +112,6 @@ body {
 
 .whiteboard-selected {
   border: 5px solid #eda72d;
-}
-
-.rubik-message {
-  text-align: center;
-  visibility: hidden;
-  opacity: 0;
-  color: #eda72d;
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  user-select: none;
-  font-size: 1.5rem;
-  transition: opacity 1s ease, visibility 1s ease;
-}
-
-.show-rubik-message {
-  visibility: visible;
-  opacity: 1;
 }
 
 .audio-button {
@@ -229,8 +178,7 @@ body {
   left: 50%;
   z-index: 1;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 1);
-  transition: visibility 1s ease, opacity 1s ease, color 1s ease,
-    font-size 0.5s ease;
+  transition: opacity 1s ease, color 1s ease, font-size 0.5s ease;
 }
 
 .loading-screen-hover:hover {
@@ -245,6 +193,7 @@ body {
   visibility: visible;
   opacity: 1;
 }
+
 .show-audio-button {
   visibility: visible;
   opacity: 0.4;

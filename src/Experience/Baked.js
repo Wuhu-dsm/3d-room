@@ -1,4 +1,4 @@
-import { Mesh, MeshBasicMaterial, SRGBColorSpace } from "three";
+import { MeshBasicMaterial, SRGBColorSpace } from "three";
 import Experience from "./Experience.js";
 
 export default class Baked {
@@ -66,7 +66,6 @@ export default class Baked {
     this.scene.add(this.model.room1);
     this.scene.add(this.model.room2);
     this.scene.add(this.model.room3);
-
     this.scene.add(this.model.linkedin);
     this.scene.add(this.model.github);
     this.scene.add(this.model.itchio);

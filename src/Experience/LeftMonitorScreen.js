@@ -33,6 +33,7 @@ export default class LeftMonitorScreen {
     this.camera = this.experience.camera;
     this.audioManager = this.experience.world.audioManager;
     this.objectRaycasted = null;
+    this.isInteractive = false;
     this.screenMonitorSize = new Vector2(
       MONITOR_SCREEN_WIDTH,
       MONITOR_SCREEN_HEIGHT
@@ -58,6 +59,12 @@ export default class LeftMonitorScreen {
     const container = document.createElement("div");
     container.style.width = this.screenMonitorSize.width + "px";
     container.style.height = this.screenMonitorSize.height + "px";
+    container.style.pointerEvents = "none";
+    container.addEventListener("wheel", this.onWheel, {
+      passive: false,
+      capture: true,
+    });
+    this.container = container;
 
     const iframe = document.createElement("iframe");
 
@@ -70,6 +77,12 @@ export default class LeftMonitorScreen {
     iframe.id = "left-monitor-screen";
     iframe.style.boxSizing = "border-box";
     iframe.style.background = "black";
+    iframe.style.pointerEvents = "none";
+    iframe.addEventListener("wheel", this.onWheel, {
+      passive: false,
+      capture: true,
+    });
+    this.iframe = iframe;
     container.appendChild(iframe);
 
     const css3dobject = new CSS3DObject(container);
@@ -99,6 +112,7 @@ export default class LeftMonitorScreen {
   }
 
   activateControls() {
+    this.setInteractive(true);
     window.addEventListener("pointermove", this.onMouseMove, false);
     window.addEventListener("message", this.receiveMessage, false);
     this.onMouseMove();
@@ -106,14 +120,29 @@ export default class LeftMonitorScreen {
   }
 
   deactivateControls() {
+    this.setInteractive(false);
     window.removeEventListener("pointermove", this.onMouseMove, false);
     window.removeEventListener("message", this.receiveMessage, false);
+    this.objectRaycasted = null;
+    this.webglElement.style.pointerEvents = "auto";
     this.isActive = false;
+  }
+
+  setInteractive(isInteractive) {
+    this.isInteractive = isInteractive;
+
+    if (this.container) {
+      this.container.style.pointerEvents = isInteractive ? "auto" : "none";
+    }
+
+    if (this.iframe) {
+      this.iframe.style.pointerEvents = isInteractive ? "auto" : "none";
+    }
   }
 
   receiveMessage = (event) => {
     if (event.data == "Projects") {
-      this.navigation.flyToPosition("rightMonitor");
+      return;
     } else if (event.data == "mousedown") {
       this.audioManager.playSingleAudio("mouseclick", 1);
     } else if (event.data == "mouseup") {
@@ -121,31 +150,45 @@ export default class LeftMonitorScreen {
     }
   };
 
+  onWheel = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.experience.navigation?.zoomFromWheel(event);
+  };
+
   onMouseMove = () => {
+    if (!this.isInteractive) {
+      return;
+    }
+
     if (
       this.objectRaycasted &&
       this.objectRaycasted.object &&
       this.objectRaycasted.object.name == "leftMonitorScreen"
     ) {
-      this.experience.navigation.orbitControls.enableDamping = false;
-      this.experience.navigation.orbitControls.enabled = false;
       this.webglElement.style.pointerEvents = "none";
     } else {
-      this.experience.navigation.orbitControls.enableDamping = true;
-      this.experience.navigation.orbitControls.enabled = true;
-      this.webglElement.style.pointerEvents = "auto";
+      const rightMonitor = this.experience.world.rightMonitorScreen;
+      if (!rightMonitor?.isPointerOverScreen()) {
+        this.webglElement.style.pointerEvents = "auto";
+      }
     }
   };
+
+  isPointerOverScreen() {
+    return (
+      this.objectRaycasted &&
+      this.objectRaycasted.object &&
+      this.objectRaycasted.object.name == "leftMonitorScreen"
+    );
+  }
 
   update() {
     if (!this.isActive) {
       return;
     }
     this.raycaster.setFromCamera(this.mouse, this.camera.instance);
-    const intersects = this.raycaster.intersectObjects(
-      this.scene.children,
-      true
-    );
+    const intersects = this.raycaster.intersectObjects([this.model.mesh], true);
     this.objectRaycasted = intersects.length > 0 ? intersects[0] : null;
   }
 }

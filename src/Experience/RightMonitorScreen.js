@@ -30,6 +30,8 @@ export default class RightMonitorScreen {
     this.mouse = this.experience.mouse;
     this.materialRightMonitor = this.experience.world.baked.model.material2;
     this.raycaster = this.experience.raycaster;
+    this.isActive = false;
+    this.isInteractive = false;
     this.screenMonitorSize = new Vector2(
       MONITOR_SCREEN_WIDTH,
       MONITOR_SCREEN_HEIGHT
@@ -54,6 +56,12 @@ export default class RightMonitorScreen {
     const container = document.createElement("div");
     container.style.width = this.screenMonitorSize.width + "px";
     container.style.height = this.screenMonitorSize.height + "px";
+    container.style.pointerEvents = "none";
+    container.addEventListener("wheel", this.onWheel, {
+      passive: false,
+      capture: true,
+    });
+    this.container = container;
 
     const iframe = document.createElement("iframe");
 
@@ -66,6 +74,12 @@ export default class RightMonitorScreen {
     iframe.id = "right-monitor-screen";
     iframe.style.boxSizing = "border-box";
     iframe.style.background = "black";
+    iframe.style.pointerEvents = "none";
+    iframe.addEventListener("wheel", this.onWheel, {
+      passive: false,
+      capture: true,
+    });
+    this.iframe = iframe;
     container.appendChild(iframe);
 
     const css3dobject = new CSS3DObject(container);
@@ -97,61 +111,78 @@ export default class RightMonitorScreen {
   }
 
   activateControls() {
+    this.setInteractive(true);
     window.addEventListener("pointermove", this.onMouseMove, false);
     window.addEventListener("message", this.receiveMessage, false);
     this.onMouseMove();
     this.isActive = true;
   }
   deactivateControls() {
+    this.setInteractive(false);
     window.removeEventListener("pointermove", this.onMouseMove, false);
     window.removeEventListener("message", this.receiveMessage, false);
+    this.objectRaycasted = null;
+    this.webglElement.style.pointerEvents = "auto";
     this.isActive = false;
   }
 
+  setInteractive(isInteractive) {
+    this.isInteractive = isInteractive;
+
+    if (this.container) {
+      this.container.style.pointerEvents = isInteractive ? "auto" : "none";
+    }
+
+    if (this.iframe) {
+      this.iframe.style.pointerEvents = "none";
+    }
+  }
+
   receiveMessage = (event) => {
-    if (event.data == "footstep01") {
-      this.audioManager.playSingleAudio("footstep01", 0.3);
-    } else if (event.data == "footstep02") {
-      this.audioManager.playSingleAudio("footstep02", 0.3);
-    } else if (event.data == "footstep03") {
-      this.audioManager.playSingleAudio("footstep03", 0.3);
-    } else if (event.data == "vase") {
-      this.audioManager.playSingleAudio("vase_break", 0.3);
-    } else if (event.data == "door") {
-      this.audioManager.playSingleAudio("door", 1);
-    } else if (event.data == "trophy") {
-      this.audioManager.playSingleAudio("trophy", 7);
-    } else if (event.data == "trophy_platinum") {
-      this.audioManager.playSingleAudio("trophy_platinum", 0.5);
-    } else if (event.data == "start") {
+    if (event.data == "start") {
       this.audioManager.playSingleAudio("start", 0.3);
     }
   };
+
+  onWheel = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.experience.navigation?.zoomFromWheel(event);
+  };
+
   onMouseMove = () => {
+    if (!this.isInteractive) {
+      return;
+    }
+
     if (
       this.objectRaycasted &&
       this.objectRaycasted.object &&
       this.objectRaycasted.object.name == "rightMonitorScreen"
     ) {
-      this.experience.navigation.orbitControls.enableDamping = false;
-      this.experience.navigation.orbitControls.enabled = false;
       this.webglElement.style.pointerEvents = "none";
     } else {
-      this.experience.navigation.orbitControls.enabled = true;
-      this.experience.navigation.orbitControls.enableDamping = true;
-      this.webglElement.style.pointerEvents = "auto";
+      const leftMonitor = this.experience.world.leftMonitorScreen;
+      if (!leftMonitor?.isPointerOverScreen()) {
+        this.webglElement.style.pointerEvents = "auto";
+      }
     }
   };
+
+  isPointerOverScreen() {
+    return (
+      this.objectRaycasted &&
+      this.objectRaycasted.object &&
+      this.objectRaycasted.object.name == "rightMonitorScreen"
+    );
+  }
 
   update() {
     if (!this.isActive) {
       return;
     }
     this.raycaster.setFromCamera(this.mouse, this.camera.instance);
-    const intersects = this.raycaster.intersectObjects(
-      this.scene.children,
-      true
-    );
+    const intersects = this.raycaster.intersectObjects([this.model.mesh], true);
     this.objectRaycasted = intersects.length > 0 ? intersects[0] : null;
   }
 }
