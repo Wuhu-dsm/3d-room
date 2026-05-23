@@ -295,7 +295,7 @@ export default class Navigation {
       if (this.isComputerTarget(this.objectRaycasted)) {
         this.showComputerView(this.getComputerSide(this.objectRaycasted));
       } else if (this.isAudioPropTarget(this.objectRaycasted)) {
-        this.experience.world.audioManager.playSingleAudio("miaomiao", 0.7);
+        this.experience.world.audioManager.toggleLoopAudio("bgm27", 0.6);
       } else if (
         (this.currentStage === "computer" || this.currentStage === "standing") &&
         this.isWhiteboardTarget(this.objectRaycasted)

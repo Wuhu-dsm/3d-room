@@ -11,6 +11,7 @@ export default class AudioManager {
     this.isMuted = false;
     this.hasStarted = false;
     this.audioListeners = [];
+    this.loopingAudios = {};
     this.setAudioManager();
   }
   setAudioManager() {
@@ -40,6 +41,18 @@ export default class AudioManager {
     });
   }
 
+  removeAudioElement(audioElement) {
+    const index = this.audioListeners.indexOf(audioElement);
+    if (index !== -1) {
+      this.audioListeners.splice(index, 1);
+    }
+
+    const indexCamera = this.camera.children.indexOf(audioElement.listener);
+    if (indexCamera !== -1) {
+      this.camera.children.splice(indexCamera, 1);
+    }
+  }
+
   playSingleAudio(audioName, volume) {
     if (this.isMuted) {
       return;
@@ -53,17 +66,10 @@ export default class AudioManager {
     sound.setLoop(false);
     sound.setVolume(volume);
     sound.play();
-    const audioElement = { sound, volume };
+    const audioElement = { sound, volume, listener };
     this.audioListeners.push(audioElement);
     sound.source.onended = () => {
-      const index = this.audioListeners.indexOf(audioElement);
-      if (index !== -1) {
-        this.audioListeners.splice(index, 1);
-      }
-      const indexCamera = this.camera.children.indexOf(listener);
-      if (indexCamera !== -1) {
-        this.camera.children.splice(indexCamera, 1);
-      }
+      this.removeAudioElement(audioElement);
     };
   }
   playLoopAudio(audioName, volume) {
@@ -76,17 +82,40 @@ export default class AudioManager {
     sound.setLoop(true);
     sound.setVolume(volume);
     sound.play();
-    const audioElement = { sound, volume };
+    const audioElement = { sound, volume, listener };
     this.audioListeners.push(audioElement);
     sound.source.onended = () => {
-      const index = this.audioListeners.indexOf(audioElement);
-      if (index !== -1) {
-        this.audioListeners.splice(index, 1);
-      }
-      const indexCamera = this.camera.children.indexOf(listener);
-      if (indexCamera !== -1) {
-        this.camera.children.splice(indexCamera, 1);
-      }
+      this.removeAudioElement(audioElement);
     };
+
+    return audioElement;
+  }
+
+  stopLoopAudio(audioName) {
+    const audioElement = this.loopingAudios[audioName];
+
+    if (!audioElement) {
+      return false;
+    }
+
+    audioElement.sound.stop();
+    this.removeAudioElement(audioElement);
+    delete this.loopingAudios[audioName];
+
+    return true;
+  }
+
+  toggleLoopAudio(audioName, volume) {
+    if (this.loopingAudios[audioName]) {
+      return this.stopLoopAudio(audioName);
+    }
+
+    if (this.isMuted) {
+      return false;
+    }
+
+    this.loopingAudios[audioName] = this.playLoopAudio(audioName, volume);
+
+    return true;
   }
 }

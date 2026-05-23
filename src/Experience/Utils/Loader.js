@@ -148,7 +148,7 @@ export default class Resources extends EventEmitter {
     const audioLoader = new AudioLoader();
 
     this.loaders.push({
-      extensions: ["mp3", "ogg"],
+      extensions: ["mp3", "ogg", "opus"],
       action: (_resource) => {
         audioLoader.load(_resource.source, (buffer) => {
           this.fileLoadEnd(_resource, buffer);

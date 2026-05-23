@@ -49,6 +49,7 @@ export default [
       { name: "floral", source: "assets/sounds/floral.mp3" },
       { name: "whoosh", source: "assets/sounds/whoosh.mp3" },
       { name: "miaomiao", source: "assets/sounds/miaomiao.mp3" },
+      { name: "bgm27", source: "assets/sounds/bgm27.opus" },
     ],
   },
 ];

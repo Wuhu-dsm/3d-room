@@ -69,7 +69,7 @@ module.exports = {
 
       // Audio
       {
-        test: /\.(mp3|ogg)$/,
+        test: /\.(mp3|ogg|opus)$/,
         use: [
           {
             loader: "file-loader",
