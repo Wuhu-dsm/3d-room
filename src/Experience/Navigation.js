@@ -171,12 +171,14 @@ export default class Navigation {
       this.webglElement.style.cursor = "auto";
     }
 
-    this.outlinePass.selectedObjects = this.selectedObjects;
+    this.outlinePass.selectedObjects = this.selectedObjects.filter(
+      (object) => object.name !== "kadunSpeakerHitbox"
+    );
   }
 
   findRaycastRoot(object) {
     if (object.name === "kadunSpeakerHitbox") {
-      return this.scene.getObjectByName("kadunSpeaker") || object;
+      return object;
     }
 
     let current = object;

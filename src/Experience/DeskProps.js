@@ -182,7 +182,6 @@ export default class DeskProps {
     this.kadunHitbox = new Mesh(geometry, material);
     this.kadunHitbox.name = "kadunSpeakerHitbox";
     this.kadunHitbox.position.copy(KADUN_HITBOX_POSITION);
-    this.kadunHitbox.visible = false;
     this.scene.add(this.kadunHitbox);
   }
 

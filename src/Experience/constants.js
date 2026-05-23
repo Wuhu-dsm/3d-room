@@ -47,7 +47,6 @@ export const RIGHT_MONITOR_IFRAME_SRC = "https://ps5-online.vercel.app";
 // Navigate
 export const ELEMENTS_TO_RAYCAST = [
   "computerReturnTarget",
-  "kadunSpeaker",
   "kadunSpeakerHitbox",
   "leftMonitor",
   "leftMonitorScreen",
@@ -96,7 +95,7 @@ export const KADUN_POSITION = new Vector3(0.2, 1.928, -4.36);
 export const KADUN_ROTATION_Y = 0;
 export const KADUN_SCALE = 0.28;
 export const KADUN_HITBOX_POSITION = new Vector3(0.2, 1.928, -4.36);
-export const KADUN_HITBOX_SIZE = new Vector3(0.42, 0.38, 0.34);
+export const KADUN_HITBOX_SIZE = new Vector3(0.24, 0.5, 0.32);
 export const PAINT_POSITION = new Vector3(1.07, 3.22, -4.668);
 export const PAINT_ROTATION_X = 0;
 export const PAINT_ROTATION_Y = 0;
