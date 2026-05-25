@@ -31,7 +31,7 @@ export const LEFT_MONITOR_CSS_OBJECT_POSITION = new Vector3(
   -4.23009
 );
 export const LEFT_MONITOR_CSS_OBJECT_SCALE = new Vector3(0.00102, 0.00102, 1);
-export const LEFT_MONITOR_IFRAME_SRC = "http://windows.orangemoon-ai.site/";
+export const LEFT_MONITOR_IFRAME_SRC = "https://windows.orangemoon-ai.site/";
 
 // Right Monitor
 export const RIGHT_MONITOR_CSS_OBJECT_POSITION = new Vector3(
@@ -42,7 +42,7 @@ export const RIGHT_MONITOR_CSS_OBJECT_POSITION = new Vector3(
 
 export const RIGHT_MONITOR_CSS_OBJECT_SCALE = new Vector3(0.00102, 0.00102, 1);
 export const RIGHT_MONITOR_CSS_OBJECT_ROTATION_Y = (-7.406 * Math.PI) / 180;
-export const RIGHT_MONITOR_IFRAME_SRC = "http://ps5.orangemoon-ai.site/";
+export const RIGHT_MONITOR_IFRAME_SRC = "https://ps5.orangemoon-ai.site/";
 
 // Navigate
 export const ELEMENTS_TO_RAYCAST = [
